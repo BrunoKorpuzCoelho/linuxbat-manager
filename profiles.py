@@ -101,20 +101,12 @@ class ProfileManager:
         description="Maximum battery life - low performance, 60% charge limit"
     )
     
-    BALANCED = PerformanceProfile(
-        name="Balanced",
-        cpu_governor=CPUGovernor.PERFORMANCE.value,
-        turbo_enabled=False,  # Performance sem turbo = balanced
-        conservation_mode=False,
-        description="Balanced performance and efficiency - recommended for most users"
-    )
-    
     PERFORMANCE = PerformanceProfile(
         name="Performance",
         cpu_governor=CPUGovernor.PERFORMANCE.value,
         turbo_enabled=True,
-        conservation_mode=False,
-        description="Maximum performance - high power consumption, no charge limits"
+        conservation_mode=None,  # Don't change conservation mode
+        description="Maximum performance - doesn't change conservation mode"
     )
     
     def __init__(self, config_path: Optional[str] = None) -> None:
@@ -212,7 +204,6 @@ class ProfileManager:
         """
         return [
             self.BATTERY_SAVER,
-            self.BALANCED,
             self.PERFORMANCE
         ]
     
@@ -284,17 +275,20 @@ class ProfileManager:
             logger.error(f"✗ Failed to set turbo boost: {e}")
             success = False
         
-        # Apply conservation mode
-        try:
-            if self.controller.is_conservation_mode_available():
-                self.controller.set_conservation_mode(profile.conservation_mode)
-                state = "enabled (60% limit)" if profile.conservation_mode else "disabled"
-                logger.info(f"✓ Conservation mode {state}")
-            else:
-                logger.warning("Conservation mode not available on this system")
-        except SystemControlError as e:
-            logger.error(f"✗ Failed to set conservation mode: {e}")
-            success = False
+        # Apply conservation mode (only if specified in profile)
+        if profile.conservation_mode is not None:
+            try:
+                if self.controller.is_conservation_mode_available():
+                    self.controller.set_conservation_mode(profile.conservation_mode)
+                    state = "enabled (60% limit)" if profile.conservation_mode else "disabled"
+                    logger.info(f"✓ Conservation mode {state}")
+                else:
+                    logger.warning("Conservation mode not available on this system")
+            except SystemControlError as e:
+                logger.error(f"✗ Failed to set conservation mode: {e}")
+                success = False
+        else:
+            logger.info("✓ Conservation mode: keeping current state (not changed by profile)")
         
         if success:
             logger.info(f"Profile '{profile.name}' applied successfully")
