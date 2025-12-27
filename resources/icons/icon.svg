@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="128" cy="128" r="120" fill="#1e1e1e"/>
+  <circle cx="128" cy="128" r="115" fill="#2d2d2d"/>
+  
+  <!-- Battery body -->
+  <rect x="60" y="80" width="136" height="96" rx="8" fill="#0d7377" stroke="#14c4cc" stroke-width="4"/>
+  
+  <!-- Battery terminal -->
+  <rect x="196" y="115" width="12" height="26" rx="4" fill="#0d7377" stroke="#14c4cc" stroke-width="2"/>
+  
+  <!-- Battery level indicator (full) -->
+  <rect x="70" y="90" width="116" height="76" rx="4" fill="#14c4cc">
+    <animate attributeName="width" values="116;100;116" dur="3s" repeatCount="indefinite"/>
+  </rect>
+  
+  <!-- Lightning bolt (charging symbol) -->
+  <path d="M 128 100 L 115 130 L 128 130 L 118 160 L 145 125 L 132 125 L 145 100 Z" 
+        fill="#ffd700" stroke="#ff8c00" stroke-width="2" stroke-linejoin="round">
+    <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>
+  </path>
+  
+  <!-- Percentage text -->
+  <text x="128" y="205" font-family="Arial, sans-serif" font-size="24" font-weight="bold" 
+        fill="#14c4cc" text-anchor="middle">BATTERY</text>
+  <text x="128" y="230" font-family="Arial, sans-serif" font-size="18" font-weight="bold" 
+        fill="#999" text-anchor="middle">MANAGER</text>
+</svg>

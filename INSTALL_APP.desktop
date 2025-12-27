@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Install Battery Manager Pro
+Comment=Click to install Battery Manager Pro (requires sudo password)
+Exec=x-terminal-emulator -e bash -c "cd '%k/..' && chmod +x install.sh && sudo ./install.sh; echo ''; echo 'Press ENTER to close...'; read"
+Icon=system-software-install
+Terminal=true
+Categories=System;
+StartupNotify=true

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Battery Manager Pro
+GenericName=Battery Management Tool
+Comment=Advanced battery and performance management for Linux laptops
+Exec=pkexec /usr/local/bin/linuxbat-manager
+Icon=/usr/share/icons/hicolor/256x256/apps/linuxbat-manager.png
+Terminal=false
+Categories=System;Settings;HardwareSettings;
+Keywords=battery;power;performance;cpu;energy;conservation;
+StartupNotify=true
+StartupWMClass=battery_manager_pro
