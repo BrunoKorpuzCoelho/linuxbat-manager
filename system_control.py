@@ -10,6 +10,7 @@ governors, and controlling turbo boost.
 # Standard library imports
 import glob
 import logging
+import os
 import subprocess
 from enum import Enum
 from pathlib import Path
@@ -197,11 +198,23 @@ class SystemController:
                 f"Cannot write to {file_path}: file does not exist"
             )
         
-        # Use echo + tee to write with sudo
-        command = [SUDO_COMMAND, TEE_COMMAND, file_path]
-        input_data = f"{value}\n"
-        
-        return self._execute_sudo_command(command, input_data)
+        # Check if already running as root
+        if os.geteuid() == 0:
+            # Running as root, write directly
+            try:
+                with open(file_path, 'w') as f:
+                    f.write(f"{value}\n")
+                logger.info(f"Wrote '{value}' to {file_path} (as root)")
+                return True
+            except Exception as e:
+                logger.error(f"Failed to write to {file_path}: {e}")
+                raise SystemControlError(f"Write failed: {e}")
+        else:
+            # Use echo + tee to write with sudo
+            command = [SUDO_COMMAND, TEE_COMMAND, file_path]
+            input_data = f"{value}\n"
+            
+            return self._execute_sudo_command(command, input_data)
     
     def set_conservation_mode(self, enabled: bool) -> bool:
         """Enable or disable battery conservation mode (60% limit).

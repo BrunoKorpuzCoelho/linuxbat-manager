@@ -55,9 +55,23 @@ pip install -r requirements.txt
 echo "[4/6] Creating launcher script..."
 cat > /usr/local/bin/linuxbat-manager << 'EOF'
 #!/bin/bash
-cd /opt/linuxbat-manager
-source venv/bin/activate
-python3 main.py
+# Check if running as root (via pkexec or sudo)
+if [ "$EUID" -eq 0 ]; then
+    # Running as root, execute directly
+    cd /opt/linuxbat-manager
+    source venv/bin/activate
+    
+    # Preserve original user for file permissions
+    if [ -n "$PKEXEC_UID" ]; then
+        export SUDO_USER=$(id -un $PKEXEC_UID)
+        export HOME=$(eval echo ~$SUDO_USER)
+    fi
+    
+    exec python3 main.py
+else
+    # Not root, request elevation
+    exec pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY HOME=$HOME /usr/local/bin/linuxbat-manager
+fi
 EOF
 chmod +x /usr/local/bin/linuxbat-manager
 
