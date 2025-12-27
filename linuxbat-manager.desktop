@@ -4,7 +4,7 @@ Type=Application
 Name=Battery Manager Pro
 GenericName=Battery Management Tool
 Comment=Advanced battery and performance management for Linux laptops
-Exec=pkexec /usr/local/bin/linuxbat-manager
+Exec=pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY /usr/local/bin/linuxbat-manager
 Icon=/usr/share/icons/hicolor/256x256/apps/linuxbat-manager.png
 Terminal=false
 Categories=System;Settings;HardwareSettings;
