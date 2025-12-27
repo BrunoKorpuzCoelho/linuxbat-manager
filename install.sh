@@ -33,7 +33,9 @@ apt-get install -y \
     libxcb-cursor0 \
     libxcb-xinerama0 \
     libxkbcommon-x11-0 \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglib2.0-0 \
+    libdbus-1-3 \
     policykit-1
 
 # 2. Create installation directory
