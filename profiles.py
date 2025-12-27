@@ -103,8 +103,8 @@ class ProfileManager:
     
     BALANCED = PerformanceProfile(
         name="Balanced",
-        cpu_governor=CPUGovernor.POWERSAVE.value,
-        turbo_enabled=True,
+        cpu_governor=CPUGovernor.PERFORMANCE.value,
+        turbo_enabled=False,  # Performance sem turbo = balanced
         conservation_mode=False,
         description="Balanced performance and efficiency - recommended for most users"
     )

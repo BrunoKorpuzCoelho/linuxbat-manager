@@ -450,7 +450,9 @@ class CPUWidget(QWidget):
             # Update frequency bar
             self.freq_bar.setMinimum(int(min_freq_mhz))
             self.freq_bar.setMaximum(int(max_freq_mhz))
-            self.freq_bar.setValue(int(freq_mhz))
+            # If frequency is 0 (idle), show minimum frequency
+            display_freq = int(freq_mhz) if freq_mhz > 0 else int(min_freq_mhz)
+            self.freq_bar.setValue(display_freq)
             
             # Update turbo boost
             if info.turbo_enabled:
